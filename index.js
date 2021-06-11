@@ -4,14 +4,9 @@ const client = new Discord.Client();
 
 const event = require('./events');
 
-client.once('ready', () => {
-    console.log('Bot is online!');
-});
-
 client.on('message', (msg) => {
-    if (msg.content === 'ping') {
-        msg.channel.send('pong');
-        console.log(event.getEvents());
+    if (msg.content === '!events') {
+        msg.channel.send(event.getEvents(msg.createdTimestamp));
     }
 });
 

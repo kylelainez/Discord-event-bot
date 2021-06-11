@@ -6,8 +6,28 @@ const sheet = file.Sheets['Sheet1'];
 
 const data = xslx.utils.sheet_to_json(sheet);
 
-function getEvents() {
-    console.log(data);
+const days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+];
+
+function getEvents(timestamp) {
+    const date = new Date(timestamp);
+    const day = date.getUTCDay();
+    const hour = date.getUTCHours();
+
+    let current = '';
+    data.forEach((obj) => {
+        if (obj.UTC === hour) {
+            current = obj[days[day]];
+        }
+    });
+    return current;
 }
 
 module.exports = { getEvents };
