@@ -18,16 +18,27 @@ const days = [
 
 function getEvents(timestamp) {
     const date = new Date(timestamp);
-    const day = date.getUTCDay();
-    const hour = date.getUTCHours();
+    let day = date.getUTCDay();
+    let hour = date.getUTCHours();
 
-    let current = '';
-    data.forEach((obj) => {
-        if (obj.UTC === hour) {
-            current = obj[days[day]];
+    let current = data.find((obj, idx) => obj.UTC === hour);
+    const next = [];
+
+    current = current[days[day]];
+
+    for (let i = 1; i <= 3; i++) {
+        if (hour === 24 || hour + i === 24) {
+            hour = 0 - i;
+            day = day + 1;
         }
-    });
-    return current;
+        next.push(data[hour + i][days[day]]);
+    }
+
+    let returnValue = `Current Event: ${current} \n\nNext Events: ${next.map(
+        (evt) => `\n${evt}`
+    )}`;
+
+    return returnValue;
 }
 
 module.exports = { getEvents };
