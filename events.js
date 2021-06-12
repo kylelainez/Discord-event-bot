@@ -29,7 +29,7 @@ function getEvents(timestamp) {
     for (let i = 1; i <= 3; i++) {
         if (hour === 24 || hour + i === 24) {
             hour = 0 - i;
-            day = day + 1;
+            day = day === 6 ? (day = 0) : day + 1;
         }
         next.push(data[hour + i][days[day]]);
     }
