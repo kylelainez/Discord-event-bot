@@ -5,13 +5,7 @@ const client = new Discord.Client();
 let channel;
 let minuteInterval;
 const event = require('./events');
-
-const messages = [
-    'Dazai Gehy!!!',
-    'Dazai is Gehy.',
-    'Dazai is very Gehy.',
-    'Dazai Gehy s39',
-];
+const image = require('./');
 
 client.on('ready', async () => {
     channel = await client.channels.fetch('854564667321483304');
@@ -23,19 +17,30 @@ client.on('ready', async () => {
 });
 
 client.on('message', (msg) => {
-    if (msg.content === '!events') {
-        msg.channel.send(event.getEvents(msg.createdTimestamp));
+    if (msg.content.startsWith('!gehy')) {
+        const taggedUser = msg.mentions.users.first();
+        const message = getMessage(
+            Math.floor(Math.random() * 4),
+            taggedUser ? taggedUser.username : 'Dazai'
+        );
+        msg.channel.send(message);
     }
 
-    if (msg.content === '!gehy') {
-        msg.channel.send(messages[Math.floor(Math.random() * 4)]);
-    }
-
-    if (msg.content === '!test') {
-        msg.channel.send(`Minutes: ${new Date().getUTCMinutes()}`);
-        console.log();
+    if (msg.content === '!eventsall') {
+        msg.channel.send('Colony Action', { files: ['./colony_image.jpeg'] });
     }
 });
+
+function getMessage(num = 0, name = 'Dazai') {
+    const messages = [
+        `${name} Gehy!!!`,
+        `${name} is Gehy.`,
+        `${name} is very Gehy.`,
+        `${name} Gehy s39`,
+    ];
+
+    return messages[num];
+}
 
 function sendMessage() {
     channel.send(event.getEvents(new Date()));
